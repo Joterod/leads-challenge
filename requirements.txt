@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+python-multipart
+asyncpg
+python-dotenv
+SQLAlchemy
+psycopg2-binary
+typing
+Jinja2
+email-validator
+PyJWT
+python-jose[cryptography]

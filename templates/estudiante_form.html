@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Estudiante</title>
+</head>
+<body>
+    <h1>Crear Estudiante</h1>
+    <form id="estudianteForm">
+        <label for="nombreCompleto">Nombre Completo:</label>
+        <input type="text" id="nombreCompleto" name="nombre_completo"><br><br>
+        <label for="correo">Correo:</label>
+        <input type="email" id="correo" name="correo"><br><br>
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion"><br><br>
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono"><br><br>
+        <label for="edad">Edad:</label>
+        <input type="number" id="edad" name="edad"><br><br>
+        <label for="carrera">Carrera:</label>
+        <select id="carrera" name="carreras" multiple>
+            <!-- Opciones de carrera obtenidas dinámicamente -->
+            {% for carrera in carreras %}
+                <option value="{{ carrera }}">{{ carrera }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="materias">Materias:</label>
+        <select id="materias" name="materias" multiple>
+            <!-- Opciones de materia obtenidas dinámicamente -->
+            {% for materia in materias %}
+                <option value="{{ materia }}">{{ materia }}</option>
+            {% endfor %}
+        </select><br><br>
+        <button type="button" onclick="crearEstudiante()">Crear Estudiante</button>
+    </form>
+
+    <script>
+        
+        function crearEstudiante() {
+            const nombreCompleto = document.getElementById('nombreCompleto').value;
+            const correo = document.getElementById('correo').value;
+            const direccion = document.getElementById('direccion').value;
+            const telefono = document.getElementById('telefono').value;
+            const edad = document.getElementById('edad').value;
+            const carrerasSeleccionadas = Array.from(document.getElementById('carrera').selectedOptions)
+                                    .map(option => option.value);
+            const materiasSeleccionadas = Array.from(document.getElementById('materias').selectedOptions)
+                                    .map(option => option.value);
+            
+            const estudiante = {
+                nombre_completo: nombreCompleto,
+                correo: correo,
+                direccion: direccion,
+                telefono: telefono,
+                edad: edad,
+                carreras: carrerasSeleccionadas,
+                materias: materiasSeleccionadas
+            };
+
+            fetch('/estudiantes/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(estudiante)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+            })
+            .catch(error => {
+                console.error('Error al enviar la solicitud:', error);
+            });
+        }
+    </script>
+</body>
+</html>
